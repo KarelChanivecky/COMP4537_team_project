@@ -1,0 +1,44 @@
+addUser(in p_email varchar(1000), in p_passwordHash varchar(1000))
+# adds a new user to db
+
+
+checkCredentials(in p_email varchar(1000), in p_passwordHash varchar(1000))
+# Check if combination of passwordHash and email exist
+# returns 0 if not, else 1
+
+addList(in p_ownerId int, p_description varchar(1000))
+# Add a list to db
+
+addListItem(in p_listId int, p_description varchar(1000))
+# Add a lit item to db
+
+deleteList(in p_listId int)
+# delete a list from db
+
+deleteListItem(in p_itemId int)
+# delete a list item from db
+
+updateList(in p_listId int, in p_description varchar(1000))
+# updates a list in db
+
+updateListItem(in p_itemId int, in p_description varchar(1000))
+# updates a list item in db
+
+getUserLists(in p_ownerId int)
+# get all the lists for a user
+# returns [{description, listId}]
+
+getListItems(in p_listId int)
+# get all the items for a list
+# returns [{description, itemId}]
+
+checkListOwnership(in p_ownerId int, in p_listId int)
+# check if a list belongs to a user
+# returns 1 if true, else 0
+
+checkItemOwnership(in p_ownerId int, in p_itemId int )
+# checks if an item belongs to a list that belongs to a user
+# returns 1 if true, else 0
+
+
+getEndpointCounts()
