@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "js-sha1": "^0.6.0"
+    "js-sha1": "^0.6.0",
+    "mysql": "^2.18.1"
   }
 }
