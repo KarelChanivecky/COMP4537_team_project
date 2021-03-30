@@ -3,3 +3,4 @@
 /server/package.json
 /.idea/vcs.xml
 /.idea/dataSources.xml
+node_modules/
