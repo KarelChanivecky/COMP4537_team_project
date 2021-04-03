@@ -70,6 +70,7 @@ create procedure addUser(in p_email varchar(1000), in p_passwordHash varchar(100
 begin
     insert into users (email, passwordHash) values (p_email, p_passwordHash);
     call addEndpointHit('end1');
+    select LAST_INSERT_ID();
 end $$
 
 create procedure checkCredentials(in p_email varchar(1000), in p_passwordHash varchar(1000))
