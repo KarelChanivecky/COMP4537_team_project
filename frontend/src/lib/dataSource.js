@@ -89,13 +89,14 @@ function getLists(user) {
 
 /**
  * Add a new todo list for user
- * @param {User} user
  * @param {TodoList} list
  * @return {Promise<void>}
  */
-function createList(user, list) {
+function createList(list) {
     return new Promise((resolve, reject) => {
-
+        ax().post(Routes.lists(), list)
+            .then(resolve)
+            .catch(reject);
     });
 }
 
