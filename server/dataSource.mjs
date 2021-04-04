@@ -2,8 +2,6 @@ import mysql from 'mysql'
 import sha1 from 'js-sha1'
 import { User, List, ListItem } from '../sharedSymbols/models.mjs'
 
-let db = getConnection();
-
 const ProcedureNames = {
     ADD_USER: 'addUser',
     CHECK_CREDENTIALS: 'checkCredentials',
@@ -20,13 +18,6 @@ const ProcedureNames = {
     GET_HIT_COUNT: 'getEndpointCounts'
 }
 
-db.on('err', err => {
-    if (err.code === 'PROTOCOL_CONNECTION_LOST') {
-        db = getConnection()
-    } else {
-        throw err;
-    }
-});
 
 //TODO: update credentials
 function getConnection() {
@@ -60,8 +51,10 @@ function createCallQuery(procName, argCount) {
  */
 function callProcedure(procName, args = []) {
     return new Promise((resolve, reject) => {
+        let db = getConnection();
         const callQuery = createCallQuery(procName, args.length);
         db.query(callQuery, args, (err, results) => {
+            db.end();
             if (err) {
                 reject(err);
             }
