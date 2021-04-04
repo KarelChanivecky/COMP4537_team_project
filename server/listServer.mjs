@@ -51,6 +51,7 @@ function verifyToken(token) {
 // -------- CREATE USER --------
 app.post('/user/create', (req, res, next) => {
     console.log("trying to add user: " + req.body);
+    console.log(req.body);
     if(!req.body.email || !req.body.pass) {
         res.status(BAD_REQUEST).json({
             message: "incomplete information in the request"
@@ -64,8 +65,10 @@ app.post('/user/create', (req, res, next) => {
         })
     })
     .catch(err => {
-        res.status(INTERNAL_ERR).json({
-            message: err
+        let errStatus = err.errno === 1062 ? BAD_REQUEST : INTERNAL_ERR
+        let errMsg = errStatus === BAD_REQUEST ? "user exists" : err
+        res.status(errStatus).json({
+            message: errMsg
         })
     });
 });
@@ -148,7 +151,7 @@ app.get('/lists/:id/items', (req, res, next) => {
             let errStatus = INTERNAL_ERR;
             checkListOwnership(parseInt(userId), req.params.id)
             .then(response => {
-                if(!response) {
+                if(!response[0]["0 < count(l.listId)"]) {
                     errStatus = UNAUTHORIZED;
                     throw Error("not the list owner")
                 }
@@ -158,8 +161,9 @@ app.get('/lists/:id/items', (req, res, next) => {
                 res.status(OK).json({items: TODOItems});
             })
             .catch(err => {
+                let errMsg = errStatus === UNAUTHORIZED ? err.message : err;
                 res.status(errStatus).json({
-                    message: err
+                    message: errMsg
                 })
             });
         }
@@ -176,6 +180,11 @@ app.post('/lists', (req, res, next) => {
             message: "login first"
         })
     }
+    if (!req.body.description) {
+        res.status(BAD_REQUEST).json({
+            message: "no description provided"
+        })
+    }
     else{
         const token = authHeader.split(' ')[1];
         const userId = verifyToken(token);
@@ -187,7 +196,7 @@ app.post('/lists', (req, res, next) => {
         else {
             addList(parseInt(userId), req.body)
             .then(id => {
-                res.status(CREATED).json({listId: id});
+                res.status(CREATED).end();
             })
             .catch(err => {
                 res.status(INTERNAL_ERR).json({
@@ -208,6 +217,11 @@ app.post('/lists/:id/items', (req, res, next) => {
             message: "login first"
         })
     }
+    if (!req.body.description) {
+        res.status(BAD_REQUEST).json({
+            message: "no description provided"
+        })
+    }
     else{
         const token = authHeader.split(' ')[1];
         const userId = verifyToken(token);
@@ -220,18 +234,19 @@ app.post('/lists/:id/items', (req, res, next) => {
             let errStatus = INTERNAL_ERR;
             checkListOwnership(parseInt(userId), req.params.id)
             .then(response => {
-                if(!response) {
+                if(!response[0]["0 < count(l.listId)"]) {
                     errStatus = UNAUTHORIZED;
                     throw Error("not the list owner")
                 }
                 return addListItem(req.params.id, req.body);
             })
             .then(id => {
-                res.status(CREATED).json({itemId: id});
+                res.status(CREATED).end();
             })
             .catch(err => {
+                let errMsg = errStatus === UNAUTHORIZED ? err.message : err;
                 res.status(errStatus).json({
-                    message: err
+                    message: errMsg
                 })
             });
         }
@@ -248,6 +263,11 @@ app.put('/lists/:id', (req, res, next) => {
             message: "login first"
         })
     }
+    if (!req.body.description) {
+        res.status(BAD_REQUEST).json({
+            message: "no description provided"
+        })
+    }
     else{
         const token = authHeader.split(' ')[1];
         const userId = verifyToken(token);
@@ -260,7 +280,7 @@ app.put('/lists/:id', (req, res, next) => {
             let errStatus = INTERNAL_ERR;
             checkListOwnership(parseInt(userId), req.params.id)
             .then(response => {
-                if(!response) {
+                if(!response[0]["0 < count(l.listId)"]) {
                     errStatus = UNAUTHORIZED;
                     throw Error("not the list owner")
                 }
@@ -270,8 +290,9 @@ app.put('/lists/:id', (req, res, next) => {
                 res.status(ACCEPTED).end();
             })
             .catch(err => {
+                let errMsg = errStatus === UNAUTHORIZED ? err.message : err;
                 res.status(errStatus).json({
-                    message: err
+                    message: errMsg
                 })
             });
         }
@@ -288,6 +309,11 @@ app.put('/lists/:id/items/:itemId', (req, res, next) => {
             message: "login first"
         })
     }
+    if (!req.body.description) {
+        res.status(BAD_REQUEST).json({
+            message: "no description provided"
+        })
+    }
     else{
         const token = authHeader.split(' ')[1];
         const userId = verifyToken(token);
@@ -300,7 +326,7 @@ app.put('/lists/:id/items/:itemId', (req, res, next) => {
             let errStatus = INTERNAL_ERR;
             checkItemOwnership(parseInt(userId), req.params.itemId)
             .then(response => {
-                if(!response) {
+                if(!response[0]["0 < count(li.itemId)"]) {
                     errStatus = UNAUTHORIZED;
                     throw Error("not the item owner")
                 }
@@ -310,8 +336,9 @@ app.put('/lists/:id/items/:itemId', (req, res, next) => {
                 res.status(ACCEPTED).end();
             })
             .catch(err => {
+                let errMsg = errStatus === UNAUTHORIZED ? err.message : err;
                 res.status(errStatus).json({
-                    message: err
+                    message: errMsg
                 })
             });
         }
@@ -340,7 +367,7 @@ app.delete('/lists/:id', (req, res, next) => {
             let errStatus = INTERNAL_ERR;
             checkListOwnership(parseInt(userId), req.params.id)
             .then(response => {
-                if(!response) {
+                if(!response[0]["0 < count(l.listId)"]) {
                     errStatus = UNAUTHORIZED;
                     throw Error("not the list owner")
                 }
@@ -350,8 +377,9 @@ app.delete('/lists/:id', (req, res, next) => {
                 res.status(ACCEPTED).end();
             })
             .catch(err => {
+                let errMsg = errStatus === UNAUTHORIZED ? err.message : err;
                 res.status(errStatus).json({
-                    message: err
+                    message: errMsg
                 })
             });
         }
@@ -380,7 +408,7 @@ app.delete('/lists/:id/items/:itemId', (req, res, next) => {
             let errStatus = INTERNAL_ERR;
             checkItemOwnership(parseInt(userId), req.params.itemId)
             .then(response => {
-                if(!response) {
+                if(!response[0]["0 < count(li.itemId)"]) {
                     errStatus = UNAUTHORIZED;
                     throw Error("not the item owner")
                 }
@@ -390,8 +418,9 @@ app.delete('/lists/:id/items/:itemId', (req, res, next) => {
                 res.status(ACCEPTED).end();
             })
             .catch(err => {
+                let errMsg = errStatus === UNAUTHORIZED ? err.message : err;
                 res.status(errStatus).json({
-                    message: err
+                    message: errMsg
                 })
             });
         }

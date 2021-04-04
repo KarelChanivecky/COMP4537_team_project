@@ -2,9 +2,9 @@ drop database if exists todo_db;
 create database todo_db;
 use todo_db;
 
-drop user if exists comp4537_team_assignment@localhost;
-create user comp4537_team_assignment@localhost identified with mysql_native_password by 'bad_password';
-grant all privileges on todo_db.* to comp4537_team_assignment@localhost;
+drop user if exists 'comp4537_team_assignment'@'localhost';
+create user 'comp4537_team_assignment'@'localhost' identified with mysql_native_password by 'password';
+grant all privileges on todo_db.* to 'comp4537_team_assignment'@'localhost';
 flush privileges;
 
 create table endpoints (
@@ -64,7 +64,7 @@ begin
     update endpoints e
     set e.hitCount = e.hitCount + 1
     where e.endpointName LIKE p_endpointName;
-end;
+end $$
 
 create procedure addUser(in p_email varchar(1000), in p_passwordHash varchar(1000))
 begin
@@ -75,10 +75,9 @@ end $$
 
 create procedure checkCredentials(in p_email varchar(1000), in p_passwordHash varchar(1000))
 begin
-    select count(u.userId) from users u where
+    select u.userId from users u where
           u.email = p_email and
           u.passwordHash = p_passwordHash;
-    select LAST_INSERT_ID();
 end $$
 
 create procedure addList(in p_ownerId int, in p_description varchar(1000))
