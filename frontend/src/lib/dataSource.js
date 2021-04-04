@@ -1,10 +1,10 @@
 import axios from "axios";
 import {Endpoint} from "./models.mjs";
 
-const DOMAIN = "localhost";
-const API_PATH = "";
-const PORT = "10000";
-const PROTOCOL = "http";
+const DOMAIN = "gurdensingh.live";
+const API_PATH = "/api";
+const PORT = "";
+const PROTOCOL = "https";
 const BASE_URL = `${PROTOCOL}://${DOMAIN}:${PORT}${API_PATH}`;
 
 

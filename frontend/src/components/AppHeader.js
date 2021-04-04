@@ -11,7 +11,7 @@ function AppHeader(props) {
         <header>
             <ColoredPaper color={headerColor}>
                 <Grid container justify="center" direction="row">
-                    <Typography variant="h1">Do TODO</Typography>
+                    <Typography variant="h1">DoToDo</Typography>
                 </Grid>
             </ColoredPaper>
         </header>
