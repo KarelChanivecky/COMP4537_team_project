@@ -1,7 +1,7 @@
 import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import styles from '../../../frontend2/styles/Home.module.css'
 import _app from "./_app";
-import {ListItem} from "../../sharedSymbols/models.mjs";
+import {ListItem} from "../../../sharedSymbols/models.mjs";
 
 export default function Home() {
     const listItem  = new ListItem("just do it please");
