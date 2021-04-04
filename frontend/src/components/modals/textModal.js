@@ -1,18 +1,23 @@
 import React, {useState} from 'react';
 import {Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, TextField} from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
+import {handleStringChange} from "../../lib/commonHandlers";
 
 
 /**
  *
- * @param {TodoList | TodoListItem} props.item
- * @param {Function} props.submitEdit
+ * @param {TodoList | TodoListItem | undefined} props.item
+ * @param {function(string)} props.submit
+ * @param {string} props.actionName
+ * @param {JSX.Element} props.Icon
  * @return {JSX.Element}
  * @constructor
  */
-function EditTextModal(props) {
+function TextModal(props) {
 
-    const {item, submitEdit} = props;
+    const {item, submit, Icon, actionName} = props;
+
+    const [description, setDescription] = useState(item? item.description : "");
 
     const [open, setOpen] = useState(false);
 
@@ -26,24 +31,25 @@ function EditTextModal(props) {
 
     const onConfirm = () => {
         handleClose()
-        submitEdit();
+        submit(description);
     }
 
     return (
         <div>
             <IconButton onClick={handleClickOpen}>
-                <EditIcon/>
+                <Icon/>
             </IconButton>
 
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-                {/*TODO*/}
-                <DialogTitle id="form-dialog-title">Edit: {item.description}</DialogTitle>
+                <DialogTitle id="form-dialog-title">{actionName}{item ? `: ${item.description}`: ""}</DialogTitle>
                 <DialogContent>
                     <TextField
                         autoFocus
                         margin="dense"
                         id="name"
                         label="New description"
+                        value={description}
+                        onChange={handleStringChange(setDescription)}
                         fullWidth
                     />
                 </DialogContent>
@@ -51,7 +57,7 @@ function EditTextModal(props) {
                     <Button onClick={handleClose} color="primary">
                         Cancel
                     </Button>
-                    <Button onClick={handleClose} color="primary">
+                    <Button onClick={onConfirm} color="primary">
                         Confirm
                     </Button>
                 </DialogActions>
@@ -60,4 +66,4 @@ function EditTextModal(props) {
     );
 }
 
-export default EditTextModal;
+export default TextModal;

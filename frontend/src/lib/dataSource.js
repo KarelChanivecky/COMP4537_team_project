@@ -77,10 +77,9 @@ export function createUser(user) {
 
 /**
  * Get all the lists for a user
- * @param {User} user
  * @return {Promise<TodoList[]>}
  */
-export function getLists(user) {
+export function getLists() {
     return new Promise((resolve, reject) => {
         ax().get(Routes.lists())
             .then(resolve)
@@ -148,7 +147,7 @@ export function getListItems(list) {
  * @param {TodoListItem} item
  * @return {Promise<void>}
  */
-export function addListItem(list, item) {
+export function createListItem(list, item) {
     return new Promise((resolve, reject) => {
         ax().post(Routes.listItems(list.id), item)
             .then(resolve)
@@ -184,6 +183,14 @@ export function deleteListItem(list, item) {
     });
 }
 
+
+function mapToEndpoints(fromDb) {
+    return fromDb.map(end => {
+        const [method, name] = end.endpointName.split(" ");
+        return new Endpoint(method, name, end.hitCount);
+    });
+}
+
 /**
  * Get the counts for all the endpoints
  * @return {Promise<Endpoint[]>}
@@ -191,7 +198,7 @@ export function deleteListItem(list, item) {
 export function getEndpointCounts() {
     return new Promise((resolve, reject) => {
         ax().get(Routes.endpoints())
-            .then(resolve)
+            .then(res => resolve(mapToEndpoints(res)))
             .then(reject);
     });
 }

@@ -30,11 +30,13 @@ export function TodoListItem(description, id=null){
 
 /**
  * An endpoint Model
- * @param {string} name - includes the method and path of the endpoint
+ * @param {string} method
+ * @param {string} name
  * @param {Number} count - The number of times an endpoint has been hit
  * @constructor
  */
-export function Endpoint(name, count) {
+export function Endpoint(method, name, count) {
+    this.method = method;
     this.name = name;
     this.count = count;
 }
