@@ -20,16 +20,32 @@ function TodoListRow(props) {
     const {list, refresh, ...other} = props;
 
     const listItemsPath = `/lists/${list.id}/items`;
-
+    const hist = useHistory();
+    const logout = () => {
+        sessionStorage.removeItem("jwt");
+        window.alert("You have been logged out");
+        hist.push(Paths.LOGIN());
+    }
     const changeList = (description) => {
         editList(new TodoList(description, list.id))
             .then(_ => refresh())
+            .catch(err => {
+                window.alert(err.response.status);
+                if (err.response.status === 401) {
+                    logout();
+                }
+            });
     }
 
     const removeList = () => {
         deleteList(list)
             .then(_ => refresh())
-            .catch(err => window.alert(err));
+            .catch(err => {
+                window.alert(err.response.status);
+                if (err.response.status === 401) {
+                    logout();
+                }
+            });
     }
 
     return (

@@ -12,16 +12,26 @@ import {
     TableHead,
     TableRow
 } from "@material-ui/core";
-import {ArrowBack} from "@material-ui/icons";
+import {ArrowBack, PowerSettingsNew} from "@material-ui/icons";
 import {Paths} from "../lib/paths";
 
-function Admin(props) {
-
+function Admin() {
+    const logout = ()=> {
+        sessionStorage.removeItem("jwt");
+        window.alert("You have been logged out");
+        hist.push(Paths.LOGIN());
+    }
     const [endpoints, setEndpoints] = useState([]);
 
     const fetchEndpoints = () => {
         getEndpointCounts()
-            .then(setEndpoints);
+            .then(setEndpoints)
+            .catch(err => {
+                window.alert(err.response.status);
+                if (err.response.status === 401) {
+                    logout();
+                }
+            });
     };
 
     useEffect(fetchEndpoints, []);
@@ -32,6 +42,11 @@ function Admin(props) {
         hist.push(Paths.LISTS());
     };
 
+    const logoutButton = sessionStorage.getItem("jwt")  ?
+        <IconButton onClick={logout}>
+            <PowerSettingsNew/>
+        </IconButton>
+        : <></>
     return (
         <Grid container direction="column">
             <TableContainer component={Paper}>
@@ -58,6 +73,7 @@ function Admin(props) {
             <IconButton onClick={back}>
                 <ArrowBack/>
             </IconButton>
+            {logoutButton}
         </Grid>
 
     );
