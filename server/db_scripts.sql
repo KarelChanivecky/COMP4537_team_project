@@ -81,13 +81,13 @@ begin
     select LAST_INSERT_ID();
 end $$
 
-create procedure addList(in p_ownerId int, p_description varchar(1000))
+create procedure addList(in p_ownerId int, in p_description varchar(1000))
 begin
     insert into lists(description, ownerId) VALUES (p_description, p_ownerId);
     call addEndpointHit('end1');
 end $$
 
-create procedure addListItem(in p_listId int, p_description varchar(1000))
+create procedure addListItem(in p_listId int, in p_description varchar(1000))
 begin
     insert into listItems(description, listId) VALUES (p_description, p_listId);
     call addEndpointHit('end1');

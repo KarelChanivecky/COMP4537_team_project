@@ -31,9 +31,9 @@ db.on('err', err => {
 function getConnection() {
     return mysql.createConnection({
         host: 'localhost',
-        user: 'comp4537_individual_assignment',
-        password: 'bad_password',
-        database: 'quiz_db'
+        user: 'root',
+        password: '',
+        database: 'term_project'
     });
 }
 
@@ -159,7 +159,7 @@ function checkListOwnership(userId, listId) {
                 if (result[0] === 0) {
                     reject(Error("Cannot verify list ownership"))
                 }
-                resolve(1);
+                resolve(result[0]);
             }, reject);
     });
 }
@@ -170,7 +170,7 @@ function checkListOwnership(userId, listId) {
  * @param {number} itemId
  * @returns {Promise.<number, Error>} On result, passes value 1
  */
-function checkListOwnership(userId, itemId) {
+function checkItemOwnership(userId, itemId) {
     return new Promise((resolve, reject) => {
         callProcedure(ProcedureNames.CHECK_ITEM_OWNERSHIP, [userId, itemId])
             .then(result => {
@@ -178,7 +178,7 @@ function checkListOwnership(userId, itemId) {
                 if (result[0] === 0) {
                     reject(Error("Cannot verify item ownership"))
                 }
-                resolve(1);
+                resolve(result[0]);
             }, reject);
     });
 }
@@ -227,13 +227,14 @@ function getListItems(listId) {
 
 /**
  * Updates a list in db
+ * @param {number} listId
  * @param {List} list
  * @returns {Promise.<void, Error>}
  */
-function updateList(list) {
+function updateList(listId, list) {
     return new Promise((resolve, reject) => {
         callProcedure(ProcedureNames.UPDATE_LIST,
-            [list.listId, list.description])
+            [listId, list.description])
             .then(result => {
                 if (result.length === 0) {
                     reject(Error("Cannot update list"))
@@ -246,13 +247,14 @@ function updateList(list) {
 
 /**
  * Updates a list item in db
+ * @param {number} itemId
  * @param {ListItem} item
  * @returns {Promise.<void, Error>}
  */
-function updateList(item) {
+function updateListItem(itemId, item) {
     return new Promise((resolve, reject) => {
         callProcedure(ProcedureNames.UPDATE_LIST_ITEM,
-            [item.itemId, item.description])
+            [itemId, item.description])
             .then(result => {
                 if (result.length === 0) {
                     reject(Error("Cannot update list item"))
