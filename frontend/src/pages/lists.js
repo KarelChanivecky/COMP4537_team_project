@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Button, Grid, List, Typography} from "@material-ui/core";
 import {createList, getLists} from "../lib/dataSource";
-import TodoListRow from "../components/listRows/ListItemRow";
+import TodoListRow from "../components/listRows/todoListRow";
 import {AddCircleOutlined} from "@material-ui/icons";
 import {TodoList} from "../lib/models.mjs";
 import TextModal from "../components/modals/textModal";
@@ -14,7 +14,9 @@ function Lists(props) {
 
     const fetchLists = () => {
         getLists()
-            .then(setLists)
+            .then(lists => {
+                setLists(lists);
+            })
             .catch(err => window.alert(err));
     }
 
@@ -38,7 +40,7 @@ function Lists(props) {
         <Grid container direction="column">
             <Typography variant="h3">TODO lists</Typography>
             <List>
-                {lists.map((list) => <TodoListRow listItem={list} refresh={setFetch}/>)}
+                {lists.map((list) => <TodoListRow list={list} refresh={setFetch}/>)}
             </List>
             <TextModal Icon={AddCircleOutlined} submit={addList} actionName="Add list"/>
             <Button onClick={toAdmin}>

@@ -12,7 +12,7 @@ import {Paths} from "../lib/paths";
 function Items(props) {
     const {listId} = useParams();
 
-    const [list, setList] = useState(new TodoList("", listId));
+    const [list, setList] = useState(new TodoList("", parseInt(listId)));
 
     const [items, setItems] = useState([]);
 
@@ -26,15 +26,15 @@ function Items(props) {
         getLists()
             .then(lists => {
                 lists.forEach(l => {
-                    if (l.id === list.id ) {
-                        setList(list);
+                    if (l.id === parseInt(listId) ) {
+                        setList(l);
                     }
                 })
             })
             .catch(err => window.alert(err));
     };
 
-    useEffect(getList, [list]);
+    useEffect(getList, []);
 
     const getItems = () => {
         getListItems(list)
@@ -42,7 +42,7 @@ function Items(props) {
             .catch(err => window.alert(err));
     }
 
-    useEffect(getItems, [list, fetchItems]);
+    useEffect(getItems, [fetchItems]);
 
     const addListItem = (description) => {
         createListItem(list, new TodoListItem(description))
@@ -52,11 +52,7 @@ function Items(props) {
 
 
     const hist = useHistory();
-    const removeList = () => {
-        deleteList(list)
-            .then(_ => hist.push(Paths.LISTS()))
-            .catch(err => window.alert(err));
-    }
+
 
     const back = () => {
         hist.push(Paths.LISTS());
@@ -68,7 +64,6 @@ function Items(props) {
                 {items.map(item => <ListItemRow listItem={item} refresh={refresh}/>)}
             </List>
             <TextModal submit={addListItem} Icon={AddCircleOutlined} actionName="Add item"/>
-            <ConfirmModal submit={removeList} Icon={Delete} actionName={Delete}/>
             <IconButton onClick={back}>
                <ArrowBack/>
             </IconButton>

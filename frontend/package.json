@@ -20,7 +20,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "PUBLIC_URL=/COMP4537_team_project/ react-scripts build",
+    "build-lochost": "PUBLIC_URL=/build/ react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

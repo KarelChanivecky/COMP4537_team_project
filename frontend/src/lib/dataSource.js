@@ -21,7 +21,7 @@ const Routes = {
 
 const ax = () => axios.create({
     baseURL: BASE_URL,
-    timeout: 1000,
+    timeout: 5000,
     headers: {
         "Authorization" : `Bearer ${sessionStorage.getItem("jwt")}`,
     }
@@ -77,7 +77,7 @@ export function createUser(user) {
 export function getLists() {
     return new Promise((resolve, reject) => {
         ax().get(Routes.lists())
-            .then(resolve)
+            .then(res => resolve(res.data.lists))
             .catch(reject);
     });
 }
@@ -130,7 +130,7 @@ export function deleteList(list) {
 export function getListItems(list) {
     return new Promise((resolve, reject) => {
         ax().get(Routes.listItems(list.id))
-            .then(resolve)
+            .then(res => resolve(res.data.items))
             .catch(reject);
     });
 }
@@ -193,7 +193,7 @@ function mapToEndpoints(fromDb) {
 export function getEndpointCounts() {
     return new Promise((resolve, reject) => {
         ax().get(Routes.endpoints())
-            .then(res => resolve(mapToEndpoints(res)))
+            .then(res => resolve(mapToEndpoints(res.data.endpoints)))
             .then(reject);
     });
 }

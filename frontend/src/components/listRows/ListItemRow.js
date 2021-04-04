@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid,  ListItem, ListItemSecondaryAction, Typography} from "@material-ui/core";
+import {ButtonGroup, Grid, ListItem, ListItemSecondaryAction, Typography} from "@material-ui/core";
 import { useParams} from "react-router-dom";
 import EditIcon from '@material-ui/icons/Edit';
 import TextModal from "../modals/textModal";
@@ -15,11 +15,11 @@ import {Delete} from "@material-ui/icons";
  * @return {JSX.Element}
  * @constructor
  */
-function TodoListRow(props) {
+function TodoListItemRow(props) {
     const {listItem, refresh, ...other} = props;
 
     const {listId} = useParams();
-    const metaList = new TodoList("", listId)
+    const metaList = new TodoList("", parseInt(listId))
 
     const editItem = (newDescription) => {
         editListItem(metaList, new TodoListItem(newDescription, listItem.id))
@@ -38,10 +38,12 @@ function TodoListRow(props) {
             <Grid container direction="row" justify="space-between">
                 <Typography variant="body1">{listItem.description}</Typography>
                 <ListItemSecondaryAction>
+                    <ButtonGroup>
+                        <TextModal item={listItem} actionName="Edit" submit={editItem} Icon={EditIcon}/>
+                        <ConfirmModal Icon={Delete} submit={deleteItem}
+                                      actionName={`Delete: ${listItem.description}`}/>
+                    </ButtonGroup>
 
-                    <TextModal item={listItem} actionName="Edit" submit={editItem} Icon={EditIcon}/>
-                    <ConfirmModal Icon={Delete} submit={deleteItem}
-                                  actionName={`Delete: ${listItem.description}`}/>
                 </ListItemSecondaryAction>
             </Grid>
         </ListItem>
@@ -49,4 +51,4 @@ function TodoListRow(props) {
     );
 }
 
-export default TodoListRow;
+export default TodoListItemRow;
