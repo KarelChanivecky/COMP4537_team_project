@@ -37,7 +37,7 @@ const ax = () => axios.create({
  * @param {User} user
  * @return {Promise<string>}
  */
-function loginUser(user) {
+export function loginUser(user) {
     sessionStorage.removeItem("jwt");
     return new Promise((resolve, reject) => {
 
@@ -59,7 +59,7 @@ function loginUser(user) {
  * @param {User} user
  * @return {Promise<string>}
  */
-function createUser(user) {
+export function createUser(user) {
     sessionStorage.removeItem("jwt");
     return new Promise((resolve, reject) => {
         ax().post(Routes.createUser(), user)
@@ -80,7 +80,7 @@ function createUser(user) {
  * @param {User} user
  * @return {Promise<TodoList[]>}
  */
-function getLists(user) {
+export function getLists(user) {
     return new Promise((resolve, reject) => {
         ax().get(Routes.lists())
             .then(resolve)
@@ -93,7 +93,7 @@ function getLists(user) {
  * @param {TodoList} list
  * @return {Promise<void>}
  */
-function createList(list) {
+export function createList(list) {
     return new Promise((resolve, reject) => {
         ax().post(Routes.lists(), list)
             .then(resolve)
@@ -106,7 +106,7 @@ function createList(list) {
  * @param {TodoList} newList
  * @return {Promise<void>}
  */
-function editList(newList) {
+export function editList(newList) {
     return new Promise((resolve, reject) => {
         ax().put(Routes.list(newList.id), newList)
             .then(resolve)
@@ -119,7 +119,7 @@ function editList(newList) {
  * @param {TodoList} list
  * @return {Promise<void>}
  */
-function deleteList(list) {
+export function deleteList(list) {
     return new Promise((resolve, reject) => {
         ax().delete(Routes.list(list.id))
             .then(resolve)
@@ -133,7 +133,7 @@ function deleteList(list) {
  * @param {TodoList} list
  * @return {Promise<TodoListItem[]>}
  */
-function getListItems(list) {
+export function getListItems(list) {
     return new Promise((resolve, reject) => {
         ax().get(Routes.listItems(list.id))
             .then(resolve)
@@ -148,7 +148,7 @@ function getListItems(list) {
  * @param {TodoListItem} item
  * @return {Promise<void>}
  */
-function addListItem(list, item) {
+export function addListItem(list, item) {
     return new Promise((resolve, reject) => {
         ax().post(Routes.listItems(list.id), item)
             .then(resolve)
@@ -162,7 +162,7 @@ function addListItem(list, item) {
  * @param {TodoListItem} newItem
  * @return {Promise<void>}
  */
-function editListItem(list, newItem) {
+export function editListItem(list, newItem) {
     return new Promise((resolve, reject) => {
         ax().put(Routes.listItem(list.id, newItem.id), newItem)
             .then(resolve)
@@ -176,7 +176,7 @@ function editListItem(list, newItem) {
  * @param {TodoListItem} item
  * @return {Promise<void>}
  */
-function deleteListItem(list, item) {
+export function deleteListItem(list, item) {
     return new Promise((resolve, reject) => {
         ax().delete(Routes.listItem(list.id, item.id))
             .then(resolve)
@@ -188,7 +188,7 @@ function deleteListItem(list, item) {
  * Get the counts for all the endpoints
  * @return {Promise<Endpoint[]>}
  */
-function getEndpointCounts() {
+export function getEndpointCounts() {
     return new Promise((resolve, reject) => {
         ax().get(Routes.endpoints())
             .then(resolve)
