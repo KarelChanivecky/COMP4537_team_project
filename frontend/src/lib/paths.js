@@ -1,5 +1,5 @@
-// const BASE_PATH = "/COMP4537_team_project";
-const BASE_PATH = "";
+const BASE_PATH = "/COMP4537_team_project";
+// const BASE_PATH = "";
 
 export const Paths = {
   LOGIN: () => `${BASE_PATH}/`,
