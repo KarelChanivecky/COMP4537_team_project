@@ -1,6 +1,6 @@
 import mysql from 'mysql'
 import sha1 from 'js-sha1'
-import {User, List, ListItem} from '../sharedSymbols/models.mjs'
+import { User, List, ListItem } from '../sharedSymbols/models.mjs'
 
 let db = getConnection();
 
@@ -16,7 +16,8 @@ const ProcedureNames = {
     DELETE_LIST: 'deleteList',
     DELETE_LIST_ITEM: 'deleteListItem',
     CHECK_LIST_OWNERSHIP: 'checkListOwnership',
-    CHECK_ITEM_OWNERSHIP: 'checkItemOwnership'
+    CHECK_ITEM_OWNERSHIP: 'checkItemOwnership',
+    GET_HIT_COUNT: 'getEndpointCounts'
 }
 
 db.on('err', err => {
@@ -134,7 +135,7 @@ function checkUser(user) {
     return new Promise((resolve, reject) => {
         const pass_hash = sha1(user.pass);
         callProcedure(ProcedureNames.CHECK_CREDENTIALS, [user.email, pass_hash])
-        //TODO: need to change this part as checkCredentials is not returning userId
+            //TODO: need to change this part as checkCredentials is not returning userId
             .then(result => {
                 if (result.length === 0) {
                     reject(Error("Cannot verify user"))
@@ -146,7 +147,7 @@ function checkUser(user) {
                     const userId = result[0][0].userId;
                     resolve(userId);
                 }
-                
+
             }, reject);
     });
 }
@@ -202,7 +203,7 @@ function getLists(userId) {
                     reject(Error("Cannot get lists"))
                 }
                 const lists = [];
-                result[0].map( list => lists.push(new List(list.description, list.listId)) ) 
+                result[0].map(list => lists.push(new List(list.description, list.listId)))
                 resolve(lists);
             }, reject);
     });
@@ -221,7 +222,7 @@ function getListItems(listId) {
                     reject(Error("Cannot get items"))
                 }
                 const items = [];
-                result[0].map( item => items.push(new ListItem(item.description, item.itemId)) ) 
+                result[0].map(item => items.push(new ListItem(item.description, item.itemId)))
                 resolve(items);
             }, reject);
     });
@@ -305,9 +306,30 @@ function deleteListItem(itemId) {
     });
 }
 
-export {addUser, addList, addListItem, 
-        checkUser, checkListOwnership,checkItemOwnership, 
-        getLists, getListItems,
-        updateList,
-        updateListItem, 
-        deleteList, deleteListItem};
+/**
+ * gets list of endpoint hit counts from db
+ */
+function getEndpointCount() {
+    return new Promise((resolve, reject) => {
+        callProcedure(ProcedureNames.GET_HIT_COUNT,
+            [])
+            .then(result => {
+                if (result.length === 0) {
+                    reject(Error("Cannot get hit counts"))
+                }
+                console.log("hit count result: ");
+                console.log(result);
+                resolve(result[0])
+            }, reject);
+    });
+}
+
+export {
+    addUser, addList, addListItem,
+    checkUser, checkListOwnership, checkItemOwnership,
+    getLists, getListItems,
+    updateList,
+    updateListItem,
+    deleteList, deleteListItem,
+    getEndpointCount
+};

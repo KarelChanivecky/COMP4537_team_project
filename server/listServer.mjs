@@ -7,7 +7,8 @@ import {
     getLists, getListItems,
     updateList,
     updateListItem,
-    deleteList, deleteListItem
+    deleteList, deleteListItem,
+    getEndpointCount
 } from './dataSource.mjs';
 
 const PORT = 10000;
@@ -421,6 +422,38 @@ app.delete('/lists/:id/items/:itemId', (req, res, next) => {
                 let errMsg = errStatus === UNAUTHORIZED ? err.message : err;
                 res.status(errStatus).json({
                     message: errMsg
+                })
+            });
+        }
+    }
+});
+
+// -------- GET ENDPOINT COUNTS --------
+app.get('/endpoints', (req, res, next) => {
+    console.log("getting endpoints");
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader) {
+        res.status(BAD_REQUEST).json({
+            message: "login first"
+        })
+    }
+    else{
+        const token = authHeader.split(' ')[1];
+        const userId = verifyToken(token);
+        if(userId === "-1") {
+            res.status(UNAUTHORIZED).json({
+                message: "cannot verify token"
+            })
+        }
+        else {
+            getEndpointCount()
+            .then(counts => {
+                res.status(OK).json({endpoints: counts});
+            })
+            .catch(err => {
+                res.status(INTERNAL_ERR).json({
+                    message: err
                 })
             });
         }
