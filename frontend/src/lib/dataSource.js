@@ -17,7 +17,8 @@ const Routes = {
     loginUser : () => "/user/login",
     createUser: () => "/user/create",
     lists: () => "/lists",
-    listItems: listId => `/lists/${listId}/items`
+    list: (listId) => `/lists/${listId}`,
+    listItems: listId => `/lists/${listId}/items`,
     listItem: (listId, itemId) => `/lists/${listId}/items/${itemId}`,
     endpoints: () => "/endpoints"
 };
@@ -41,12 +42,12 @@ function loginUser(user) {
     return new Promise((resolve, reject) => {
 
         ax().post(Routes.loginUser(), user)
-            /** @param {string} r.data.jwt */
+            /** @param {string} r.data.authToken */
             .then(r => {
-                if (!r.data.jwt) {
-                    reject({status: r.status, reason: "No token received"})
+                if (!r.data.authToken) {
+                    reject({status: r.status, message: "No token received"})
                 }
-                sessionStorage.setItem("jwt", r.data.jwt);
+                sessionStorage.setItem("jwt", r.data.authToken);
                 resolve();
             })
             .catch(reject);
@@ -62,12 +63,12 @@ function createUser(user) {
     sessionStorage.removeItem("jwt");
     return new Promise((resolve, reject) => {
         ax().post(Routes.createUser(), user)
-            /** @param {string} r.data.jwt */
+            /** @param {string} r.data.authToken */
             .then(r => {
-                if (!r.data.jwt) {
-                    reject({status: r.status, reason: "No token received"})
+                if (!r.data.authToken) {
+                    reject({status: r.status, message: "No token received"})
                 }
-                sessionStorage.setItem("jwt", r.data.jwt);
+                sessionStorage.setItem("jwt", r.data.authToken);
                 resolve();
             })
             .catch(reject);
@@ -107,7 +108,9 @@ function createList(list) {
  */
 function editList(newList) {
     return new Promise((resolve, reject) => {
-
+        ax().put(Routes.list(newList.id), newList)
+            .then(resolve)
+            .catch(reject);
     });
 }
 
@@ -118,19 +121,23 @@ function editList(newList) {
  */
 function deleteList(list) {
     return new Promise((resolve, reject) => {
-
+        ax().delete(Routes.list(list.id))
+            .then(resolve)
+            .catch(reject);
     });
 }
 
 
 /**
  * Get all the lists items for a list
- * @param {User} user
+ * @param {TodoList} list
  * @return {Promise<TodoListItem[]>}
  */
-function getListItems(user) {
+function getListItems(list) {
     return new Promise((resolve, reject) => {
-
+        ax().get(Routes.listItems(list.id))
+            .then(resolve)
+            .catch(reject);
     });
 }
 
@@ -143,29 +150,37 @@ function getListItems(user) {
  */
 function addListItem(list, item) {
     return new Promise((resolve, reject) => {
-
+        ax().post(Routes.listItems(list.id), item)
+            .then(resolve)
+            .catch(reject);
     });
 }
 
 /**
  * Edit a list item to todo list
+ * @param {TodoList} list
  * @param {TodoListItem} newItem
  * @return {Promise<void>}
  */
-function editListItem(newItem) {
+function editListItem(list, newItem) {
     return new Promise((resolve, reject) => {
-
+        ax().put(Routes.listItem(list.id, newItem.id), newItem)
+            .then(resolve)
+            .catch(reject);
     });
 }
 
 /**
  * Edit a list item to todo list
+ * @param {TodoList} list
  * @param {TodoListItem} item
  * @return {Promise<void>}
  */
-function deleteListItem(item) {
+function deleteListItem(list, item) {
     return new Promise((resolve, reject) => {
-
+        ax().delete(Routes.listItem(list.id, item.id))
+            .then(resolve)
+            .catch(reject);
     });
 }
 
@@ -175,7 +190,9 @@ function deleteListItem(item) {
  */
 function getEndpointCounts() {
     return new Promise((resolve, reject) => {
-
+        ax().get(Routes.endpoints())
+            .then(resolve)
+            .then(reject);
     });
 }
 
