@@ -78,6 +78,7 @@ begin
     select count(u.userId) from users u where
           u.email = p_email and
           u.passwordHash = p_passwordHash;
+    select LAST_INSERT_ID();
 end $$
 
 create procedure addList(in p_ownerId int, p_description varchar(1000))

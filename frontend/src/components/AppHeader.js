@@ -8,13 +8,13 @@ function AppHeader(props) {
         contrastText: "#FFF"
     }
     return (
-
-        <ColoredPaper color={headerColor}>
-            <Grid container justify="center" direction="row">
-                <Typography variant="h1">Do TODO</Typography>
-            </Grid>
-        </ColoredPaper>
-
+        <header>
+            <ColoredPaper color={headerColor}>
+                <Grid container justify="center" direction="row">
+                    <Typography variant="h1">Do TODO</Typography>
+                </Grid>
+            </ColoredPaper>
+        </header>
     );
 }
 
