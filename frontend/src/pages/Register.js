@@ -2,8 +2,9 @@ import React, {useState} from 'react';
 import {Button, ButtonGroup, Grid, TextField, Typography} from "@material-ui/core";
 import {Link, useHistory} from "react-router-dom";
 import {handleStringChange} from "../lib/commonHandlers";
-import {createUser, loginUser} from "../lib/dataSource";
+import {createUser } from "../lib/dataSource";
 import {User} from "../lib/models.mjs";
+import {Paths} from "../lib/paths";
 
 function Register(props) {
 

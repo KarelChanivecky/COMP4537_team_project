@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Grid, IconButton, List, Typography} from "@material-ui/core";
+import {Button, Grid, List, Typography} from "@material-ui/core";
 import {createList, getLists} from "../lib/dataSource";
 import TodoListRow from "../components/listRows/ListItemRow";
 import {AddCircleOutlined} from "@material-ui/icons";
 import {TodoList} from "../lib/models.mjs";
 import TextModal from "../components/modals/textModal";
 import {useHistory} from "react-router-dom";
-import * as Path from "path";
+import {Paths} from "../lib/paths";
 
 function Lists(props) {
 

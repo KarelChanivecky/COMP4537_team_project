@@ -1,5 +1,5 @@
 import React from 'react';
-import {Divider, Grid, ListItem, ListItemSecondaryAction, Typography} from "@material-ui/core";
+import {Divider, ListItem, ListItemSecondaryAction, Typography} from "@material-ui/core";
 import {Link} from "react-router-dom";
 import {editList} from "../../lib/dataSource";
 import {TodoList} from "../../lib/models.mjs";

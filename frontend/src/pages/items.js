@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Grid, IconButton, List, Typography} from "@material-ui/core";
+import {Grid, IconButton, List, Typography} from "@material-ui/core";
 import {useHistory, useParams} from "react-router-dom";
 import {createListItem, deleteList, getListItems, getLists} from "../lib/dataSource";
 import {TodoList, TodoListItem} from "../lib/models.mjs";
@@ -7,6 +7,7 @@ import ListItemRow from "../components/listRows/ListItemRow";
 import {AddCircleOutlined, ArrowBack, Delete} from "@material-ui/icons";
 import TextModal from "../components/modals/textModal";
 import ConfirmModal from "../components/modals/ConfirmModal";
+import {Paths} from "../lib/paths";
 
 function Items(props) {
     const {listId} = useParams();
@@ -33,7 +34,7 @@ function Items(props) {
             .catch(err => window.alert(err));
     };
 
-    useEffect(getList, []);
+    useEffect(getList, [list]);
 
     const getItems = () => {
         getListItems(list)
@@ -41,7 +42,7 @@ function Items(props) {
             .catch(err => window.alert(err));
     }
 
-    useEffect(getItems, [fetchItems]);
+    useEffect(getItems, [list, fetchItems]);
 
     const addListItem = (description) => {
         createListItem(list, new TodoListItem(description))

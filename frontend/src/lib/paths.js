@@ -1,4 +1,4 @@
-const Paths = {
+export const Paths = {
   LOGIN: () => "/",
   REGISTER: () => "/register",
   ADMIN: () => "/admin",

@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import {Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, TextField} from "@material-ui/core";
-import EditIcon from "@material-ui/icons/Edit";
 import {handleStringChange} from "../../lib/commonHandlers";
 
 

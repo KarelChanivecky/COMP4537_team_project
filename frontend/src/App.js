@@ -5,6 +5,7 @@ import Register from "./pages/Register";
 import Lists from "./pages/lists";
 import Items from "./pages/items";
 import Admin from "./pages/admin";
+import {Paths} from "./lib/paths";
 
 function App() {
   return (

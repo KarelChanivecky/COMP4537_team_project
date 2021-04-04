@@ -1,17 +1,12 @@
 import axios from "axios";
+import {Endpoint} from "./models.mjs";
 
-const DOMAIN = "";
+const DOMAIN = "localhost";
 const API_PATH = "";
-const PORT = "";
-const PROTOCOL = "https";
+const PORT = "10000";
+const PROTOCOL = "http";
 const BASE_URL = `${PROTOCOL}://${DOMAIN}:${PORT}${API_PATH}`;
 
-const Methods = {
-    GET: "GET",
-    POST: "POST",
-    PUT: "PUT",
-    DELETE: "DELETE"
-};
 
 const Routes = {
     loginUser : () => "/user/login",

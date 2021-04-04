@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import {getEndpointCounts} from "../lib/dataSource";
-import {Endpoint} from "../lib/models.mjs";
 import {useHistory} from "react-router-dom";
 import {
     Grid,
@@ -14,6 +13,7 @@ import {
     TableRow
 } from "@material-ui/core";
 import {ArrowBack} from "@material-ui/icons";
+import {Paths} from "../lib/paths";
 
 function Admin(props) {
 

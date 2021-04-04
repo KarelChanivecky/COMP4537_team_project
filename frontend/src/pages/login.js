@@ -4,6 +4,7 @@ import {Link, useHistory} from "react-router-dom";
 import {handleStringChange} from "../lib/commonHandlers";
 import {loginUser} from "../lib/dataSource";
 import {User} from "../lib/models.mjs";
+import {Paths} from "../lib/paths";
 
 function Login(props) {
     const hist = useHistory();

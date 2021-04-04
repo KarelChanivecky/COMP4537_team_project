@@ -1,6 +1,6 @@
 import React from 'react';
-import {ButtonGroup, Grid, IconButton, ListItem, ListItemSecondaryAction, Typography} from "@material-ui/core";
-import {Link, useParams} from "react-router-dom";
+import { Grid,  ListItem, ListItemSecondaryAction, Typography} from "@material-ui/core";
+import { useParams} from "react-router-dom";
 import EditIcon from '@material-ui/icons/Edit';
 import TextModal from "../modals/textModal";
 import {deleteListItem, editListItem} from "../../lib/dataSource";
