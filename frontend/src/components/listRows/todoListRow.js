@@ -19,7 +19,7 @@ import {Paths} from "../../lib/paths";
 function TodoListRow(props) {
     const {list, refresh, ...other} = props;
 
-    const listItemsPath = `/lists/${list.id}/items`;
+    const listItemsPath = Paths.ITEMS(list.id);
     const hist = useHistory();
     const logout = () => {
         sessionStorage.removeItem("jwt");
