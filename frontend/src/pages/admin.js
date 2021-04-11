@@ -24,6 +24,7 @@ function Admin() {
     const [endpoints, setEndpoints] = useState([]);
 
     const fetchEndpoints = () => {
+        console.log("fetching");
         getEndpointCounts()
             .then(setEndpoints)
             .catch(err => {

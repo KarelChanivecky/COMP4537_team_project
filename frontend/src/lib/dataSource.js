@@ -2,20 +2,20 @@ import axios from "axios";
 import {Endpoint} from "./models.mjs";
 
 const DOMAIN = "gurdensingh.live";
-const API_PATH = "/api";
+const API_PATH = "/api/v1";
 const PORT = "";
 const PROTOCOL = "https";
 const BASE_URL = `${PROTOCOL}://${DOMAIN}:${PORT}${API_PATH}`;
 
 
 const Routes = {
-    loginUser : () => "/user/login",
-    createUser: () => "/user/create",
-    lists: () => "/lists",
+    loginUser : () => `/user/login`,
+    createUser: () => `/user/create`,
+    lists: () => `/lists`,
     list: (listId) => `/lists/${listId}`,
     listItems: listId => `/lists/${listId}/items`,
     listItem: (listId, itemId) => `/lists/${listId}/items/${itemId}`,
-    endpoints: () => "/endpoints"
+    endpoints: () => `/endpoints`
 };
 
 
@@ -194,7 +194,7 @@ export function getEndpointCounts() {
     return new Promise((resolve, reject) => {
         ax().get(Routes.endpoints())
             .then(res => resolve(mapToEndpoints(res.data.endpoints)))
-            .then(reject);
+            .catch(reject);
     });
 }
 
