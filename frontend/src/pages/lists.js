@@ -32,6 +32,10 @@ function Lists() {
     const [fetch, setFetch] = useState(true);
 
     const addList = (description) => {
+        if (description.length === 0 ) {
+            alert("Please enter a description.");
+            return;
+        }
         createList(new TodoList(description))
             .then(_ => setFetch(!fetch))
             .catch(err => {

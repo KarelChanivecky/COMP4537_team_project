@@ -58,6 +58,10 @@ function Items() {
     useEffect(getItems, [fetchItems, listId]);
 
     const addListItem = (description) => {
+        if (description.length === 0 ) {
+            alert("Please enter a description.");
+            return;
+        }
         createListItem(list, new TodoListItem(description))
             .then(_ => setFetchItems(!fetchItems))
             .catch(err => {
